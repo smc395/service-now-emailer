@@ -1,0 +1,7 @@
+.vscode/
+Thumbs.db
+*.xml
+*.pyc
+*.txt
+*.csv
+*.xlsx
