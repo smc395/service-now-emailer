@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+
+{% block taskCard %}
+<div>
+  {# Begin top section of card #}
+  <table width={{ task_card_length }} cellspacing="0" cellpadding="0" border="0"
+    style="font-family: Arial, Helvetica, sans-serif; background-color: #F2F2F2; color:black;">
+    <tr>
+      <td valign="top" style="font-size: 0px;"><img src="./assets/top-left.png" width=20 height="20" /></td>
+      {# Begin blue state area #}
+      <td align="center" valign="middle" style="font-size: 0px;">
+        <img src="./assets/transparent.gif" width="1" height="15" />
+        <table width="150" cellspacing="0" cellpadding="0" border="0" style="font-family: Arial, Helvetica, sans-serif;">
+          <tr>
+            <td align="left" valign="top" style="background-color: #0070C0; font-size: 0;">
+              <img src="./assets/top-left-dark-blue.png" width="10" height="10" />
+            </td>
+            <td align="center" rowspan="3" width="100" style="background-color: #0070C0; font-size: 0px; color: white;">
+              <img src="./assets/transparent.gif" width="1" height="5" /><br/>
+              <span style="background-color: #0070C0; font-size: 20px; color: white;">
+                {% if value.state == 'Open' %}
+                        In Queue
+                    {% elif value.state == 'Customer Testing' %}
+                        Customer Review
+                    {% else %}
+                        {{ value.state }}
+                {% endif %}
+              </span><br/>
+              <img src="./assets/transparent.gif" width="1" height="5" />
+            </td>
+            <td align="right" valign="top" style="background-color: #0070C0; font-size: 0;">
+              <img src="./assets/top-right-dark-blue.png" width="10" height="10" />
+            </td>
+          </tr>
+          <tr>
+            <td style="background-color: #0070C0; font-size: 0;"><img src="./assets/transparent.gif" width="1" height="1" /></td>
+            <td style="background-color: #0070C0; font-size: 0;"><img src="./assets/transparent.gif" width="1" height="1" /></td>
+          </tr>
+          <tr>
+            <td align="left" valign="bottom" style="background-color: #0070C0; font-size: 0;">
+              <img src="./assets/bottom-left-dark-blue.png" width="10" height="10" />
+            </td>
+            <td align="right" valign="bottom" style="background-color: #0070C0; font-size: 0;">
+              <img src="./assets/bottom-right-dark-blue.png" width="10" height="10" />
+            </td>
+          </tr>
+        </table>
+        <img src="./assets/transparent.gif" width="1" height="15" />
+      </td>
+      {# End blue state area #}
+      {# Begin short description area #}
+      <td valign="middle" style="font-size: 0px;"><img src="./assets/transparent.gif" width="20" height="20" /></td>
+      <td width="775" align="left" valign="middle" style="font-size: 0px;">
+        <img src="./assets/transparent.gif" width="1" height="15" />
+        {% if value.state != 'Waiting for Approval' %}<div style="font-size: 20px;">{{ value.short_description }}</div>{% endif %}
+        <img src="./assets/transparent.gif" width="1" height="15" />
+      </td>
+      <!--
+          <td width="200" align="right" style="font-size: 0px;">
+            <img src="./assets/transparent.gif" width="1" height="15"/><br/>
+            <span style="font-size: 16px; font-weight:bold;">DAYS ELAPSED</span><br/>
+            <span style="font-size: 16px; font-weight:bold;">IN FULFILLMENT</span><br/>
+            <img src="./assets/transparent.gif" width="1" height="15"/>
+          </td>
+          <td width="25" align="right" style="font-size: 0px;">
+            <img src="./assets/transparent.gif" width="1" height="15"/><br/>
+            <span style="color: #0070C0; font-size: 16px; font-weight: bold;">30</span>
+            <span style="color: #0070C0; font-size: 16px; font-weight: bold;">0</span><br/>
+            <img src="./assets/transparent.gif" width="1" height="15"/>
+          </td>
+          -->
+      {# End short description area #}
+      <td valign="top"><img src="./assets/top-right.png" width="20" height="20" /></td>
+    </tr>
+  </table>
+  {# End top section of card #}
+  {# Begin timeline #}
+  <table width={{ task_card_length }} cellspacing="0" cellpadding="0" border="0"
+    style="font-family: Arial, Helvetica, sans-serif; background-color: #F2F2F2; color:black;">
+    <tr>
+      <td colspan="21"><img src="./assets/transparent.gif" width="1" height="25" /></td>
+    </tr>
+    {# Begin timeline pointer #}
+    <tr>
+      <td colspan="3" align="center" valign="top"></td>
+      {% if value.state == 'Open' %}
+      <td colspan="6" align="left" valign="top" style="color:#0070C0; font-size: 0px;">
+          {# Front of the queue dot #}
+            {% if value.place_in_queue|int == 1 %}
+                <img src="./assets/transparent_147px.gif" width="147" height="1" />
+                <span style="font-size: 14px;">#{{ value.place_in_queue|int }} in line</span><br />
+                <img src="./assets/transparent_157px.gif" width="157" height="1" />
+                <img src="./assets/timeline-pointer.gif" width="45" />
+          {# If the queue size is less than 4, place in the middle#}
+            {% elif open_queue_size <= 4 %}
+                <img src="./assets/transparent_90px.gif" width="90" height="1" />
+                <span style="font-size: 14px;">#{{ value.place_in_queue|int }} in line</span><br />
+                <img src="./assets/transparent_100px.gif" width="100" height="1" />
+                <img src="./assets/timeline-pointer.gif" width="45" />
+          {# Closer to front of queue dot #}
+            {% elif value.place_in_queue|int <= (open_queue_size|int // 4) %}
+                <img src="./assets/transparent_125px.gif" width="125" height="1" />
+                <span style="font-size: 14px;">#{{ value.place_in_queue|int }} in line</span><br />
+                <img src="./assets/transparent_135px.gif" width="135" height="1" />
+                <img src="./assets/timeline-pointer.gif" width="45" />
+          {# Middle of queue dot #}
+            {% elif value.place_in_queue|int <= (open_queue_size|int // 4) * 2 %}
+                <img src="./assets/transparent_90px.gif" width="90" height="1" />
+                <span style="font-size: 14px;">#{{ value.place_in_queue|int }} in line</span><br />
+                <img src="./assets/transparent_100px.gif" width="100" height="1" />
+                <img src="./assets/timeline-pointer.gif" width="45" />
+          {# Closer to back of queue dot #}
+            {% elif value.place_in_queue|int <= (open_queue_size|int // 4) * 3 %}
+                <img src="./assets/transparent_65px.gif" width="65" height="1" />
+                <span style="font-size: 14px;">#{{ value.place_in_queue|int }} in line</span><br />
+                <img src="./assets/transparent_75px.gif" width="75" height="1" />
+                <img src="./assets/timeline-pointer.gif" width="45" />
+          {# Back of queue dot #}
+          {% else %}
+              <img src="./assets/transparent_40px.gif" width="40" height="1" />
+              <span style="font-size: 14px;">#{{ value.place_in_queue|int }} in line</span><br />
+              <img src="./assets/transparent_50px.gif" width="50" height="1" />
+              <img src="./assets/timeline-pointer.gif" width="45" />
+          {% endif %}
+      </td>
+      {% else %}
+      <td colspan="3" align="center" valign="top" style="color:#0070C0; font-size: 0px;">
+        <img src="./assets/transparent.gif" width="1" height="3" /><br />
+        <img src="./assets/transparent.gif" width="1" height="5" />
+      </td>
+      {% endif %}
+      <td colspan="3" align="center" valign="top"></td>
+      {% if value.state == 'Requirements Gathering' %}
+      <td colspan="3" align="center" valign="top" style="color:#0070C0; font-size: 0px;">
+        <img src="./assets/transparent.gif" width="1" height="3" /><br />
+        <img src="./assets/timeline-pointer.gif" width="45" /><br />
+        <img src="./assets/transparent.gif" width="1" height="5" />
+      </td>
+      {% endif %}
+      <td colspan="3" align="center" valign="top"></td>
+      {% if value.state == 'Work in Progress' %}
+      <td colspan="3" align="center" valign="top" style="color:#0070C0; font-size: 0px;">
+        <img src="./assets/transparent.gif" width="1" height="3" /><br />
+        <img src="./assets/timeline-pointer.gif" width="45" /><br />
+        <img src="./assets/transparent.gif" width="1" height="5" />
+      </td>
+      {% endif %}
+      <td colspan="3" align="center" valign="top"></td>
+      {% if value.state == 'Customer Testing' %}
+      <td colspan="3" align="center" valign="top" style="color:#0070C0; font-size: 0px;">
+        <img src="./assets/transparent.gif" width="1" height="3" /><br />
+        <img src="./assets/timeline-pointer.gif" width="45" /><br />
+        <img src="./assets/transparent.gif" width="1" height="5" />
+      </td>
+      {% endif %}
+      <td colspan="3" align="center" valign="top"></td>
+    </tr>
+    {# End timeline pointer #}
+    {# Begin timeline dots #}
+    <tr>
+      <td><img src="./assets/transparent.gif" width={{ timeline_line_length}} height="1" /></td>
+      <!--Opened -->
+        <td align="center" valign="middle"><img src="./assets/green-bullet.gif" width="20" height="20" /></td>
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <!-- In Queue -->
+        {% if value.state_order > 2 %}<td align="center" valign="middle"><img src="./assets/green-bullet.gif" width="20" height="20" /></td>
+        {% else %}<td align="center" valign="middle"><img src="./assets/gray-bullet.gif" width="20" height="20" /></td>
+        {% endif %}
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <!-- New Dot -->
+        {% if value.state_order > 2 %}<td align="center" valign="middle"><img src="./assets/green-bullet.gif" width="20" height="20" /></td>
+        {% else %}<td align="center" valign="middle"><img src="./assets/gray-bullet.gif" width="20" height="20" /></td>
+        {% endif %}
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <!-- Requirements Gathering -->
+        {% if value.state_order > 3 %}<td align="center" valign="middle"><img src="./assets/green-bullet.gif" width="20" height="20" /></td>
+        {% else %}<td align="center" valign="middle"><img src="./assets/gray-bullet.gif" width="20" height="20" /></td>
+        {% endif %}
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+        <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <!-- Work in Progress -->
+        {% if value.state_order > 4 %}<td align="center" valign="middle"><img src="./assets/green-bullet.gif" width="20" height="20" /></td>
+        {% else %}<td align="center" valign="middle"><img src="./assets/gray-bullet.gif" width="20" height="20" /></td>
+        {% endif %}
+      <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <!-- Customer Testing -->
+      <td align="center" valign="middle"><img src="./assets/gray-bullet.gif" width="20" height="20" /></td>
+      <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <td align="center" valign="middle"><img src="./assets/timeline-background.gif" width={{ timeline_line_length}} height="20" /></td>
+      <!-- Completed -->
+      <td align="center" valign="middle"><img src="./assets/gray-bullet.gif" width="20" height="20" /></td>
+      <td><img src="./assets/transparent.gif" width={{ timeline_line_length}} height="1" /></td>
+    </tr>
+    {# End timeline dots #}
+    <tr>
+      <td colspan="21" style="font-size: 0px;"><img src="./assets/transparent.gif" width="1" height="3" /></td>
+    </tr>
+    {# Begin timeline words under dots #}
+    <tr>
+      <td colspan="3" align="center" valign="top" style="color:#4CAF50;">Opened</td>
+      <td colspan="3" align="center" valign="top" {% if value.state_order == 2 %}style="color:#0070C0;"{% elif value.state_order > 2 %}style="color:#4CAF50;"{% endif %}>Back of Line<br/>({{open_queue_size}} tickets)</td>
+      <td colspan="3" align="center" valign="top" {% if value.state_order == 2 %}style="color:#0070C0;"{% elif value.state_order > 2 %}style="color:#4CAF50;"{% endif %}>Front of Line</td>
+      <td colspan="3" align="center" valign="top" {% if value.state_order == 3 %}style="color:#0070C0;"{% elif value.state_order > 3 %}style="color:#4CAF50;"{% endif %}>Requirements<br/>Gathering</td>
+      <td colspan="3" align="center" valign="top" {% if value.state_order == 4 %}style="color:#0070C0;"{% elif value.state_order > 4 %}style="color:#4CAF50;"{% endif %}>Work in<br>Progress</td>
+      <td colspan="3" align="center" valign="top" {% if value.state_order > 4 %}style="color:#0070C0;"{% endif %}>Customer<br/>Review</td>
+      <td colspan="3" align="center" valign="top">Completed</td>
+    </tr>
+    {# End timeline words under dots #}
+    <tr>
+      <td colspan="21"><img src="./assets/transparent.gif" width="1" height="25" /></td>
+    </tr>
+  </table>
+  {# End timeline #}
+  {# Begin activity pull from Service Now #}
+    {% if value.state == 'Requirements Gathering' or value.state == 'Customer Testing' %} {% include 'taskstate_note.html' with context %} {% endif %}
+  {# End activity pull from Service Now #}
+  {# Begin Analyst section #}
+  <table width={{ task_card_length }} cellspacing="0" cellpadding="0" border="0"
+    style="font-family: Arial, Helvetica, sans-serif; background-color: #F2F2F2; color:black;">
+    <tr>
+      <td colspan="6">
+        <img src="./assets/transparent.gif" width="1" height="20" />
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="2" align="left" valign="top"><img src="./assets/transparent.gif" width="20" height="1" /></td>
+      <td rowspan="2" width="100" align="center" valign="top" style="font-size: 0px;">
+        <span style="color: #A5A5A5; font-size: 14px;">Assigned</span><br />
+        <span style="color: #A5A5A5; font-size: 14px;">Analyst</span><br />
+        <img src="./assets/transparent.gif" width="1" height="5" /><br />
+        {% if value.assigned_to_alias == 'jfu' %}
+          <img src="./assets/avatar-jason.png" width="80" height="80" /><br/>
+        {% elif value.assigned_to_alias == 'schao' %}
+          <img src="./assets/avatar-micah.png" width="80" height="80" /><br/>
+        {% else %}
+          <img src="./assets/avatar-unassigned.png" width="80" height="80" /><br/>
+        {% endif %}
+        <img src="./assets/transparent.gif" width="1" height="5" /><br />
+        <span style="color: #0070C0; font-weight: bold; font-size: 20px;">
+            {% if value.assigned_to_alias == 'schao' %}
+                Micah Chao
+            {% else %}
+                {{ value.assigned_to_name }}
+            {% endif %}
+        </span>
+      </td>
+      <td rowspan="2" style="font-size: 0px;">
+        <img src="./assets/transparent.gif" width="15" height="1" />
+      </td>
+      <td rowspan="2" width="450" valign="top">
+        <table cellspacing="0" cellpadding="0" border="0"
+          style="font-family: Arial, Helvetica, sans-serif; background-color: #F2F2F2; color:black;">
+          <!-- %20 is a space; %0D%0A is a line break -->
+          <tr>
+            <td colspan="2" style="font-size: 16px;">
+              <b>Action Links</b>
+            </td>
+          </tr>
+          {# Email icon #}
+          {% if value.assigned_to_name != 'Unassigned' and value.state != 'Open' %}
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/transparent.gif" width="1" height="5" /></td>
+          </tr>
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/email.gif" width="20" height="20" /></td>
+            <td style="font-size: 14px;" valign="middle">&nbsp;
+              <a style="color: #0070C0;"
+              href={{ "\"mailto:" ~ value.assigned_to_email ~ "?subject=Email%20about%20" ~ value.item_number ~
+              "&body=" ~ value.item_number ~ " - " ~ value.short_description|replace(" ", "%20")
+              ~ "%0D%0A%0D%0AAnalyst%20link%2C%20do%20not%20delete%3A%20%20https://place-holder-url/nav_to.do?uri=sc_task.do?sys_id=" ~ value.task_sys_id
+              ~ "%0D%0A%0D%0AMessage:%20Insert%20Your%20Message%20Here\"" }}>
+                Email
+                <b>
+                    {% if value.assigned_to_alias == 'schao' %}
+                        Micah Chao
+                    {% else %}
+                        {{ value.assigned_to_name }}
+                    {% endif %}
+                </b> about this ticket
+              </a>
+            </td>
+          </tr>
+          {% endif %}
+          {# Messaging icon #}
+          {# Escalation icon #}
+          {% if value.state != 'Waiting for Approval' %}
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/transparent.gif" width="1" height="10" />
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/escalate.gif" width="20" height="20" /></td>
+            <td style="font-size: 14px;" valign="middle">&nbsp;
+              <a style="color: #0070C0;"
+                href={{ "\"mailto:" ~ escalation_email ~ "?subject=Ticket%20Escalation:%20" ~ value.item_number
+                ~ "&body=" ~ value.item_number ~ " - " ~ value.short_description|replace(" ", "%20")
+                ~ "%0D%0A%0D%0AAnalyst%20link%2C%20do%20not%20delete%3A%20%20https://place-holder-url/nav_to.do?uri=sc_task.do?sys_id=" ~ value.task_sys_id
+                ~ "%0D%0A%0D%0AReason%20for%20Escalation:%20%0D%0A%0D%0AHard%20due%20date:%20\"" }}>
+                Email to request ticket escalation
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/transparent.gif" width="1" height="10" />
+            </td>
+          </tr>
+          {% endif %}
+          {# Waiting approval icon #}
+          {% if value.state == 'Waiting for Approval' %}
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/transparent.gif" width="1" height="10" />
+            </td>
+          </tr>
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/red-bullet.gif" width="20" height="20" /></td>
+            <td style="font-size: 14px;" valign="middle">&nbsp;Please contact your manager to approve this ticket</td>
+          </tr>
+          <tr>
+            <td style="font-size: 0px;" valign="middle"><img src="./assets/transparent.gif" width="1" height="10" />
+            </td>
+          </tr>
+          {% endif %}
+        </table>
+      </td>
+      <td width="200" align="left" valign="top" style="font-size: 14px;">
+        <table cellspacing="0" cellpadding="0" border="0"
+          style="font-family: Arial, Helvetica, sans-serif; background-color: #F2F2F2; color:black;">
+          <tr>
+            <td>
+              View in Service Now:
+              <a href={{ "\"https://place-holder-url/sp?id=ticket&table=sc_req_item&sys_id=" ~ value.item_sys_id  ~ "&view=sp\"" }}
+                style="color: #0070C0;">{{ value.item_number }}</a><br/><br/>
+              Opened: {{ value.request_opened_date }}
+              {% if value.state != 'Waiting for Approval' %}<br/>Approved: {{ value.request_approval_date }}{% endif %}
+            </td>
+          </tr>
+          <tr></tr>
+          {# If the state of the ticket is not 'Open', then show the last updated information #}
+          {% if value.state_order > 2 %}
+          <tr>
+            Last activity on ticket:<br/>{{value.sys_updated_on}}
+          </tr>
+          {% endif %}
+        </table>
+      </td>
+      <td width="20" valign="top"><img src="./assets/transparent.gif" width="20" height="1" /></td>
+    </tr>
+    <tr>
+      <td align="right" valign="bottom" style="font-size: 14px;">{{ value.requester_task_num|int }} of {{ requester_queue_size|int }} Tickets</td>
+    </tr>
+  </table>
+  <table width={{ task_card_length }} cellspacing="0" cellpadding="0" border="0"
+    style="font-family: Arial, Helvetica, sans-serif; background-color: #F2F2F2; color:black;">
+    <tr>
+      <td align="left" valign="bottom" style="font-size: 0px; background-color: #F2F2F2;"><img src="./assets/bottom-left.png" width="20" height="20" /></td>
+      <td width=760 style="font-size: 0px;"><img src="./assets/transparent.gif" width="1" height="1" /></td>
+      <td align="right" valign="bottom" style="font-size: 0px; background-color: #F2F2F2;"><img src="./assets/bottom-right.png" width="20" height="20" /></td>
+    </tr>
+  </table>
+  {# End Analyst section #}
+</div>
+<br>
+{% endblock taskCard %}

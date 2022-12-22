@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body style="font-family: Arial, Helvetica, sans-serif;">
+        <div>
+            <p>Aloha {{ requester_name }},</p>
+            <p>This is an automated message from the Analytics Center of Excellence (ACE) - Business.</p>
+            <p>As of {{ today_date }} you have {{ requester_queue_size }} {% if requester_queue_size > 1 %}tickets{% else %}ticket{% endif %} open.</p>
+            <p>We strive for excellence! If we have fallen short of that goal, please contact {{ escalation_email }}</p>
+            {% for key,value in tasks.iterrows() %}
+                {% block taskCard scoped %}
+                <div>
+                    <p>{{ value.parent }} - {{ value.short_description }}</p>
+                    <p>As of {{ today_date }} this request is #{{ value.place_in_queue }} of {{ queue_size }} and will be
+                        addressed as soon as possible</p>
+                    <p>The status of this ticket is:
+                    <ul>
+                        <li>{{ value.state }}</li>
+                        <li>Opened: {{ value.sys_created_on }}, days elapsed: {{ value.days_in_queue.days }} </li>
+                        <li>Assigned to: {{ value.assigned_to }}</li>
+                    </ul>
+                    </p>
+                </div>
+                {% endblock %}
+            {% endfor %}
+            <p>If you have any additional questions or concerns please contact {{ group_email }}</p>
+            <p>Mahalo for your patience and understanding</p>
+        </div>
+    </body>
+</html>

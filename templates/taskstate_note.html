@@ -1,0 +1,42 @@
+<table width={{ task_card_length }} cellspacing="0" cellpadding="0" border="0" style="font-family: Arial, Helvetica, sans-serif; background-color: #F2F2F2; color:black;">
+  <tr>
+    <td colspan="3" style="font-size: 0px;"><img src="./assets/transparent.gif" width="100" height="1" />
+    </td>
+    <td valign="top" align="left" style="background-color: #D8D8D8; font-size: 0px;"><img src="./assets/top-left-dark-gray"
+        width="7" height="7" /></td>
+    <td width=615 style="background-color: #D8D8D8; font-size: 0px;"></td>
+    <td valign="top" align="right" style="background-color: #D8D8D8; font-size: 0px;"><img
+        src="./assets/top-right-dark-gray" width="7" height="7" /></td>
+    <td style="font-size: 0px;"><img src="./assets/transparent.gif" width="50" height="1" /></td>
+  </tr>
+  <tr>
+    <td valign="top" style="font-size: 0px;"><img src="./assets/transparent.gif" width="50" height="1" />
+    </td>
+    <td style="font-size: 0px;">
+      <img src="./assets/red-bullet.gif" width="20" height="20" />
+    </td>
+    <td valign="top" style="font-size: 0px;"><img src="./assets/transparent.gif" width="5" height="1" />
+    </td>
+    <td style="background-color: #D8D8D8; font-size: 0px;"></td>
+    <td width=600 valign="middle" align="center" style="background-color: #D8D8D8; font-size:14px;">
+      {% if value.state == 'Requirements Gathering' %}
+        The assigned analyst will contact you about this request. If you have been contacted, please respond within two weeks or this ticket will be closed.
+      {% elif value.state == 'Customer Testing' %}
+        Please review the data sent to you by the assigned analyst and respond within two weeks or this ticket will be closed.
+      {% endif %}
+    </td>
+    <td style="background-color: #D8D8D8; font-size: 0px;"><img src="./assets/transparent.gif" width="10" height="1" />
+    </td>
+    <td style="font-size: 0px;"><img src="./assets/transparent.gif" width="50" height="10" /></td>
+  </tr>
+  <tr>
+    <td colspan="3" style="font-size: 0px;"><img src="./assets/transparent.gif" width="100" height="1" />
+    </td>
+    <td valign="bottom" align="left" style="background-color: #D8D8D8; font-size: 0px;"><img
+        src="./assets/bottom-left-dark-gray" width="7" height="7" /></td>
+    <td style="background-color: #D8D8D8; font-size: 0px;"></td>
+    <td valign="bottom" align="right" style="background-color: #D8D8D8; font-size: 0px;"><img
+        src="./assets/bottom-right-dark-gray" width="7" height="7" /></td>
+    <td style="font-size: 0px;"><img src="./assets/transparent.gif" width="50" height="1" /></td>
+  </tr>
+</table>
